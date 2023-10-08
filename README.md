@@ -1,5 +1,7 @@
 # AstroSonix backend app
 
+Frontend app repo: https://github.com/jeansmasters/frontend-app
+
 ## Usage
 
 For now, this app is not deploy anywhere and is serves as a proof of concept.
