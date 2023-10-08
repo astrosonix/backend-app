@@ -3,6 +3,26 @@ import os
 n = 3
 
 
+def read_file_as_bytes(file_path):
+    with open(file_path, 'rb') as file:
+        return file.read()
+
+def wait_for_downloads_to_finish(download_folder):
+    seconds = 0
+    dl_wait = True
+    while dl_wait and seconds < 60:  # wait for at most 60 seconds
+        time.sleep(1)
+        dl_wait = False
+        for fname in os.listdir(download_folder):
+            if fname.endswith('.crdownload'):
+                dl_wait = True
+        seconds += 1
+    if dl_wait:
+        print("Download timed out!")
+        return False
+    return True
+
+
 def generate_music_single(prompt):
     driver = webdriver.Chrome()
     options = webdriver.ChromeOptions()
@@ -47,12 +67,16 @@ def generate_music_single(prompt):
             # sound = AudioSegment.from_file(downloaded_file, format="mp4")
             # sound.export("out.wav", format="wav")
 
+            # TODO convert to WAV and read wav 
             shutil.copy(downloaded_file, os.getcwd())
             print("File copied successfully!")
             return read_file_as_bytes(downloaded_file)
 
     except Exception as e:
         print(f"Error: {str(e)}")
+
+
+
 
 def generate_music(prompts: list[str]):
     main_prompt = f"""
